@@ -1,4 +1,5 @@
 const todos = [];
+const filter = {ALL: "ALL", PENDING: "PENDING", DONE: "DONE"};
 
 document.getElementById("new-todo").addEventListener("keypress", function (e) {
     if (e.key === "Enter") {
@@ -12,12 +13,21 @@ document.getElementById("new-todo").addEventListener("keypress", function (e) {
     }
 });
 
-function renderTodos() {
+document.getElementById("filter").addEventListener("change", (event) => {
+    renderTodos(filter[event.target.value]);
+})
+
+function renderTodos(currentFilter = filter.ALL) {
     const todoListUl = document.getElementById("todo-list");
 
     todoListUl.innerHTML = "";
 
     for (const todo of todos) {
+        switch(currentFilter){
+            case filter.ALL: break;
+            case filter.PENDING: if (todo.done) {continue} else break;
+            case filter.DONE: if (!todo.done) continue;
+        } 
         const todoItemLi = document.createElement("li");
         todoItemLi.textContent = todo.text;
 
